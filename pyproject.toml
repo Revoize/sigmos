@@ -1,0 +1,97 @@
+[project]
+name = "sigmos"
+version = "0.0.1"
+description = "Audio quality evaluation using SIGMOS metric"
+authors = [
+    {name = "Revoize", email = "matt@revoize.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "librosa>=0.11.0,<0.12.0",
+    "numpy>=2.3.5,<3.0.0",
+    "onnxruntime>=1.23.2,<2.0.0",
+    "scipy>=1.16.3,<2.0.0",
+    "soundfile>=0.13.1,<0.14.0",
+    "typer>=0.21.1,<0.22.0",
+]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.13.1,<8.0.0",
+    "darglint>=1.8.1,<2.0.0",
+    "poethepoet>=0.40.0,<0.41.0",
+    "pre-commit>=4.5.1,<5.0.0",
+    "pytest>=9.0.2,<10.0.0",
+    "ruff>=0.14.10,<0.15.0",
+]
+[project.scripts]
+sigmos = "sigmos.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatchling.build.targets.wheel.shared-data]
+"sigmos/models" = ["*.onnx"]
+
+[tool.uv]
+add-bounds = "major"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "B",
+    "A001",
+    "C4",
+    "D",
+    "ERA",
+    "I",
+    "N",
+    "S",
+]
+
+ignore = [
+    "D104",   # Missing docstring in public package
+    "D100",   # Missing docstring in public module
+    "D101",   # Missing docstring in public class
+    "D106",   # Missing docstring in public nested class
+    "D203",   # Incompatible with D211 (Google style - no blank line before class)
+    "D212",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # Allow assert statements in tests (security check)
+"sigmos/cli.py" = ["B008"]  # Function calls in argument defaults (typer.Argument, typer.Option)
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+known-first-party = ["sigmos"]
+force-single-line = false
+force-wrap-aliases = false
+
+[tool.poe]
+envfile = ".env"
+
+[tool.poe.tasks]
+configure = "./scripts/configure.sh"
+update = "./scripts/update.sh"
+lint = "ruff check ."
+lint-fix = "ruff check --fix ."
+format = "ruff format ."
+format-check = "ruff format --check ."
+test = 'coverage run -m pytest --showlocals'
+coverage = "coverage report"
+hooks-run = "pre-commit run --all-files"
+hooks-update = "pre-commit autoupdate"

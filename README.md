@@ -1,0 +1,131 @@
+# Revoize SIGMOS
+
+Python package for audio quality evaluation using the SIGMOS metric.
+
+SIGMOS is a metric that estimates P.804 audio quality dimensions based on subjectively annotated data from ITU-T P.804 to mimic human perception of audio quality.
+
+This package is based on the [Microsoft SIG-Challenge repository](https://github.com/microsoft/SIG-Challenge) and includes the original SIGMOS implementation and ONNX model.
+
+## Installation
+
+```bash
+pip install sigmos
+```
+
+Or using `uv`:
+
+```bash
+uv add sigmos
+```
+
+## Usage
+
+### Command Line Interface
+
+Calculate SIGMOS scores from an audio file:
+
+```bash
+sigmos <audio_file> [options]
+```
+
+**Options:**
+- `--channel`, `-c`: Channel to analyze (default: 0)
+- `--json`, `-j`: Output JSON format
+- `--verbose`, `-v`: Show detailed information
+
+**Examples:**
+
+```bash
+# Simple output (overall score only)
+sigmos audio.wav
+
+# Analyze specific channel
+sigmos audio.wav --channel 1
+
+# JSON output with all scores
+sigmos audio.wav --json
+
+# Verbose human-readable output
+sigmos audio.wav --verbose
+```
+
+**Output Formats:**
+
+- **Default**: Overall score as float (for script compatibility)
+- **JSON** (`--json`): Full JSON with all scores and metadata
+- **Verbose** (`--verbose`): Human-readable formatted output with all scores
+
+### Python API
+
+```python
+from sigmos import calculate_sigmos
+import numpy as np
+import soundfile as sf
+
+# Load audio file
+audio, sample_rate = sf.read("audio.wav")
+
+# Calculate SIGMOS scores
+scores = calculate_sigmos(audio, sample_rate=sample_rate)
+
+# Access individual scores
+print(f"Overall quality: {scores['MOS_OVRL']:.3f}")
+print(f"Signal quality: {scores['MOS_SIG']:.3f}")
+print(f"Color/tonal: {scores['MOS_COL']:.3f}")
+print(f"Discontinuity: {scores['MOS_DISC']:.3f}")
+print(f"Loudness: {scores['MOS_LOUD']:.3f}")
+print(f"Noise: {scores['MOS_NOISE']:.3f}")
+print(f"Reverberation: {scores['MOS_REVERB']:.3f}")
+```
+
+**Function Signature:**
+
+```python
+def calculate_sigmos(
+    audio: np.ndarray,
+    sample_rate: int = 48000
+) -> dict
+```
+
+**Parameters:**
+- `audio`: Audio signal as 1D numpy array
+- `sample_rate`: Sample rate in Hz (defaults to 48000). Audio will be resampled to 48kHz if different.
+
+**Returns:**
+Dictionary with SIGMOS scores:
+- `MOS_OVRL`: Overall MOS score (main metric, typically 1-5)
+- `MOS_SIG`: Signal quality
+- `MOS_COL`: Color/tonal quality
+- `MOS_DISC`: Discontinuity
+- `MOS_LOUD`: Loudness
+- `MOS_NOISE`: Noise level
+- `MOS_REVERB`: Reverberation
+
+**Note:** SIGMOS scores typically range from 1-5, where higher is better.
+
+## Supported Audio Formats
+
+The CLI supports all audio formats supported by `soundfile`, including:
+- WAV
+- FLAC
+- OGG
+- And other formats supported by libsndfile
+
+## Attribution
+
+This implementation is based on code from Microsoft's SIG-Challenge repository:
+
+- **Repository**: https://github.com/microsoft/SIG-Challenge
+- **License**: MIT
+- **Original Work**: Microsoft Corporation
+- **Challenge**: ICASSP 2024 Speech Signal Improvement Challenge
+
+The following components were adapted from the Microsoft SIG-Challenge repository:
+- Core SIGMOS implementation
+- ONNX model weights
+
+Attribution headers are preserved in the source files copied over from the original repository.
+
+## License
+
+This package is distributed under the MIT License.
