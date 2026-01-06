@@ -17,4 +17,3 @@ def _get_estimator() -> SigMOS:
     if _sigmos_estimator is None:
         _sigmos_estimator = SigMOS(model_dir=str(_MODEL_DIR), model_version=Version.V1)
     return _sigmos_estimator
-

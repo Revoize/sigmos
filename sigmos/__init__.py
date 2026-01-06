@@ -44,4 +44,3 @@ def calculate_sigmos(audio: np.ndarray, sample_rate: int = 48000) -> dict:
         raise ValueError("Audio array is empty")
     estimator = _get_estimator()
     return estimator.run(audio, sr=sample_rate)
-
