@@ -22,7 +22,8 @@ def calculate_sigmos(audio: np.ndarray, sample_rate: int = 48000) -> dict:
 
     Args:
         audio: Audio signal (1D numpy array)
-        sample_rate: Sample rate in Hz (defaults to 48000). Audio will be resampled to 48kHz if different.
+        sample_rate: Sample rate in Hz (defaults to 48000).
+            Audio will be resampled to 48kHz if different.
 
     Returns:
         Dictionary with SIGMOS scores including:
