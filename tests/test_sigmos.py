@@ -102,9 +102,9 @@ def test_calculate_sigmos_integration_real_audio():
 
     # Check expected score for noisy audio file (based on test-quality.sh expectations)
     # Noisy audio should have lower overall score
-    assert (
-        scores["MOS_OVRL"] < 2.5
-    ), f"Expected MOS_OVRL < 2.5 for noisy audio, got {scores['MOS_OVRL']}"
+    assert scores["MOS_OVRL"] < 2.5, (
+        f"Expected MOS_OVRL < 2.5 for noisy audio, got {scores['MOS_OVRL']}"
+    )
 
     # Output all scores for validation (but don't check thresholds)
     print(f"\nSIGMOS scores for {audio_file.name}:")
