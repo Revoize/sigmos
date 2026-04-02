@@ -4,6 +4,7 @@
 # Original copyright (c) Microsoft Corporation.
 
 import os
+import sys
 from enum import Enum
 
 import librosa
@@ -95,7 +96,10 @@ class SigMOS:
                 target_sr=self.sampling_rate,
                 res_type=self.resample_type,
             )
-            print(f"Audio file resampled from {sr} to {self.sampling_rate}!")
+            print(
+                f"Audio file resampled from {sr} to {self.sampling_rate}!",
+                file=sys.stderr,
+            )
 
         features = self.stft(audio)
         features = self.compressed_mag_complex(features)
