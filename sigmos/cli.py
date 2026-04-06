@@ -29,36 +29,20 @@ def calculate_sigmos_from_file(audio_file_path: str, channel: int = 0) -> dict:
     """
     # Load the audio file
     try:
-        audio_data, sample_rate = sf.read(audio_file_path)
+        audio_data, sample_rate = sf.read(audio_file_path, always_2d=True)
     except Exception as e:
         raise ValueError(f"Failed to load audio file: {e}") from e
 
     if len(audio_data) == 0:
         raise ValueError("Audio file is empty")
 
-    # Handle mono (1D) or multi-channel (2D) audio
-    if audio_data.ndim == 1:
-        # Mono audio
-        if channel != 0:
-            raise ValueError(
-                f"Channel {channel} requested but file is mono "
-                "(only channel 0 available)"
-            )
-        selected_channel = audio_data
-        num_channels = 1
-    elif audio_data.ndim == 2:
-        # Multi-channel audio
-        num_channels = audio_data.shape[1]
-        if channel < 0 or channel >= num_channels:
-            raise ValueError(
-                f"Channel {channel} out of range. File has {num_channels} "
-                f"channel(s) (0-{num_channels - 1})"
-            )
-        selected_channel = audio_data[:, channel]
-    else:
+    num_channels = audio_data.shape[1]
+    if channel < 0 or channel >= num_channels:
         raise ValueError(
-            f"Unsupported audio format: expected 1D or 2D array, got {audio_data.ndim}D"
+            f"Channel {channel} out of range. File has {num_channels} "
+            f"channel(s) (0-{num_channels - 1})"
         )
+    selected_channel = audio_data[:, channel]
 
     # Calculate SIGMOS scores
     try:
@@ -82,9 +66,17 @@ def main(
     channel: int = typer.Option(
         0, "-c", "--channel", help="Channel to analyze (default: 0)"
     ),
-    json_output: bool = typer.Option(False, "-j", "--json", help="Output JSON format"),
+    json_output: bool = typer.Option(
+        False,
+        "-j",
+        "--json",
+        help="Output JSON format with all scores and metadata (implies --verbose)",
+    ),
     verbose: bool = typer.Option(
-        False, "-v", "--verbose", help="Show detailed information"
+        False,
+        "-v",
+        "--verbose",
+        help="Show detailed information (ignored when --json is used)",
     ),
 ):
     """Calculate SIGMOS score for audio quality assessment."""

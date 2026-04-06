@@ -135,6 +135,31 @@ def test_cli_channel_selection(tmp_path):
     assert result_invalid.exit_code != 0
 
 
+def test_cli_stereo_file(stereo_fixture):
+    """Test CLI processes a stereo audio file correctly."""
+    runner = CliRunner()
+
+    # Channel 0 should work and return a valid score
+    result0 = runner.invoke(app, [str(stereo_fixture), "--json", "--channel", "0"])
+    assert result0.exit_code == 0
+    data0 = json.loads(result0.stdout.strip())
+    assert data0["channel"] == 0
+    assert 1 <= data0["scores"]["MOS_OVRL"] <= 5
+
+    # Channel 1 should return the same score (duplicated channel)
+    result1 = runner.invoke(app, [str(stereo_fixture), "--json", "--channel", "1"])
+    assert result1.exit_code == 0
+    data1 = json.loads(result1.stdout.strip())
+    assert data1["channel"] == 1
+    assert data0["scores"]["MOS_OVRL"] == pytest.approx(
+        data1["scores"]["MOS_OVRL"], abs=1e-3
+    )
+
+    # Channel 2 should fail (only 2 channels)
+    result_invalid = runner.invoke(app, [str(stereo_fixture), "--channel", "2"])
+    assert result_invalid.exit_code != 0
+
+
 def test_cli_file_not_found():
     """Test CLI with non-existent file."""
     runner = CliRunner()

@@ -1,8 +1,8 @@
 # Revoize SIGMOS
 
-Python package for audio quality evaluation using the SIGMOS metric.
+Python package for speech signal quality evaluation using the SIGMOS metric.
 
-SIGMOS is a metric that estimates P.804 audio quality dimensions based on subjectively annotated data from ITU-T P.804 to mimic human perception of audio quality.
+SIGMOS is a metric that estimates speech quality dimensions defined in the ITU-T P.804 standard. It is trained on subjectively annotated data collected according to the P.804 methodology to mimic human perception of speech quality.
 
 This package is based on the [Microsoft SIG-Challenge repository](https://github.com/microsoft/SIG-Challenge) and includes the original SIGMOS implementation and ONNX model.
 
