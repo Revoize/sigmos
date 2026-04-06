@@ -1,7 +1,5 @@
 """Tests for SIGMOS calculation."""
 
-from pathlib import Path
-
 import numpy as np
 import pytest
 import soundfile as sf
@@ -62,15 +60,10 @@ def test_calculate_sigmos_empty_audio():
         calculate_sigmos(audio, sample_rate=48000)
 
 
-def test_calculate_sigmos_integration_real_audio():
+def test_calculate_sigmos_integration_real_audio(mono_fixture):
     """Integration test with real audio file."""
-    audio_file = Path(__file__).parent / "fixtures" / "karol_1_long_noisy.wav"
-
-    if not audio_file.exists():
-        pytest.fail(f"Test audio file not found: {audio_file}")
-
     # Load the audio file
-    audio_data, sample_rate = sf.read(str(audio_file))
+    audio_data, sample_rate = sf.read(str(mono_fixture))
 
     # Handle mono or stereo
     if audio_data.ndim == 2:
@@ -107,7 +100,7 @@ def test_calculate_sigmos_integration_real_audio():
     )
 
     # Output all scores for validation (but don't check thresholds)
-    print(f"\nSIGMOS scores for {audio_file.name}:")
+    print(f"\nSIGMOS scores for {mono_fixture.name}:")
     print(f"  MOS_OVRL: {scores['MOS_OVRL']:.3f}")
     print(f"  MOS_SIG: {scores['MOS_SIG']:.3f}")
     print(f"  MOS_COL: {scores['MOS_COL']:.3f}")

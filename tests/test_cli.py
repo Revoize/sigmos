@@ -1,7 +1,6 @@
 """Tests for SIGMOS CLI."""
 
 import json
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -85,15 +84,10 @@ def test_cli_verbose_output(tmp_path):
     assert "MOS_SIG" in output
 
 
-def test_cli_real_audio_file():
+def test_cli_real_audio_file(mono_fixture):
     """Test CLI with the real audio file."""
-    audio_file = Path(__file__).parent / "fixtures" / "karol_1_long_noisy.wav"
-
-    if not audio_file.exists():
-        pytest.fail(f"Test audio file not found: {audio_file}")
-
     runner = CliRunner()
-    result = runner.invoke(app, [str(audio_file)])
+    result = runner.invoke(app, [str(mono_fixture)])
 
     assert result.exit_code == 0
     output = result.stdout.strip()
