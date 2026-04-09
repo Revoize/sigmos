@@ -8,14 +8,11 @@ This package is based on the [Microsoft SIG-Challenge repository](https://github
 
 ## Installation
 
-```bash
-pip install sigmos
-```
+1. Make sure you have `git-lfs` installed and initialized.
+2. install the package with
 
-Or using `uv`:
-
-```bash
-uv add sigmos
+```sh
+uv tool install .
 ```
 
 ## Usage
@@ -29,6 +26,7 @@ sigmos <audio_file> [options]
 ```
 
 **Options:**
+
 - `--channel`, `-c`: Channel to analyze (default: 0)
 - `--json`, `-j`: Output JSON format
 - `--verbose`, `-v`: Show detailed information
@@ -88,11 +86,13 @@ def calculate_sigmos(
 ```
 
 **Parameters:**
+
 - `audio`: Audio signal as 1D numpy array
 - `sample_rate`: Sample rate in Hz (defaults to 48000). Audio will be resampled to 48kHz if different.
 
 **Returns:**
 Dictionary with SIGMOS scores:
+
 - `MOS_OVRL`: Overall MOS score (main metric, typically 1-5)
 - `MOS_SIG`: Signal quality
 - `MOS_COL`: Color/tonal quality
@@ -106,6 +106,7 @@ Dictionary with SIGMOS scores:
 ## Supported Audio Formats
 
 The CLI supports all audio formats supported by `soundfile`, including:
+
 - WAV
 - FLAC
 - OGG
@@ -121,6 +122,7 @@ This implementation is based on code from Microsoft's SIG-Challenge repository:
 - **Challenge**: ICASSP 2024 Speech Signal Improvement Challenge
 
 The following components were adapted from the Microsoft SIG-Challenge repository:
+
 - Core SIGMOS implementation
 - ONNX model weights
 
