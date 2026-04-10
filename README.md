@@ -142,7 +142,7 @@ uv tool install --editable --reinstall .
 
 (also works without the `--editable` flag).
 
-uv is particularly sticky when it comes to local tool installs. Just running `uv tool install .` will likely result in reusing the already built wheel. Using `--reinstall` will rebuild the wheel.
+uv is particularly sticky when it comes to local tool installs. Just running `uv tool install .` or `uv tool install --force .` will likely result in reusing the wheel that was built in the past, i.e. not actually updating the package. Using `--reinstall` will rebuild the wheel.
 
 ## Attribution
 
