@@ -12,8 +12,10 @@ This package is based on the [Microsoft SIG-Challenge repository](https://github
 2. install the package with
 
 ```sh
-uv tool install .
+uv tool install --editable .
 ```
+
+That should automatically update the tool if there are any changes to this repository.
 
 ## Usage
 
@@ -111,6 +113,36 @@ The CLI supports all audio formats supported by `soundfile`, including:
 - FLAC
 - OGG
 - And other formats supported by libsndfile
+
+## Troubleshooting
+
+### Issues loading the onnx file
+
+If you encounter an error like
+
+```
+Error: Failed to calculate SIGMOS scores: [ONNXRuntimeError] : 7 : INVALID_PROTOBUF : Load model from .../sigmos/models/model-sigmos_1697718653_41d092e8-epo-200.onnx failed: Protobuf parsing failed.
+```
+
+it likely means you don't have git-lfs installed. Install git-lfs and do
+
+```sh
+git lfs pull
+```
+
+to fix.
+
+### Reinstalling the package
+
+If you installed the package without the `--editable` flag and you want to update it, you need to run
+
+```sh
+uv tool install --editable --reinstall .
+```
+
+(also works without the `--editable` flag).
+
+uv is particularly sticky when it comes to local tool installs. Just running `uv tool install .` will likely result in reusing the already built wheel. Using `--reinstall` will rebuild the wheel.
 
 ## Attribution
 
