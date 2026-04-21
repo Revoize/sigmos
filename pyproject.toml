@@ -23,7 +23,7 @@ dev = [
     "poethepoet>=0.44.0,<0.45.0",
     "pre-commit>=4.5.1,<5.0.0",
     "pytest>=9.0.2,<10.0.0",
-    "ruff>=0.15.10,<0.16.0",
+    "ruff>=0.15.11,<0.16.0",
 ]
 [project.scripts]
 sigmos = "sigmos.cli:app"
