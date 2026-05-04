@@ -51,7 +51,7 @@ jobs:
         if: steps.check-changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
           commit-message: "chore: update pre-commit hooks"
           title: "chore: update pre-commit hooks"
           body: |
