@@ -1,6 +1,8 @@
 version: 2
 updates:
-  - package-ecosystem: "uv"
-    directory: "."
+  # GitHub Actions pins are updated here; Python/uv dependencies are handled by
+  # the refresh-lockfile workflow.
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"

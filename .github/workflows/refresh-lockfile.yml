@@ -1,0 +1,67 @@
+name: Refresh lockfile
+
+on:
+  schedule:
+    # 1st of every month at 03:00 UTC (offset from the pre-commit update job)
+    - cron: "0 3 1 * *"
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  refresh-lock:
+    name: "Refresh uv lockfile"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.0.0
+        with:
+          version: "latest"
+
+      - name: Upgrade lockfile
+        run: uv lock --upgrade
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [ -n "$(git status --porcelain uv.lock)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Lockfile updated:"
+            git --no-pager diff --stat uv.lock
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No lockfile changes"
+          fi
+
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.changed == 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GH_PAT }}
+          commit-message: "chore: refresh uv lockfile"
+          title: "chore: refresh uv lockfile"
+          body: |
+            Automated monthly `uv lock --upgrade`: moves dependencies to the
+            latest versions the `pyproject.toml` bounds allow, without editing
+            those bounds. Auto-merges once CI — including the lowest-direct
+            floor checks — passes.
+          branch: "chore/refresh-lockfile"
+          delete-branch: true
+          add-paths: uv.lock
+          labels: dependencies
+
+      - name: Enable auto-merge
+        if: steps.check-changes.outputs.changed == 'true'
+        run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
