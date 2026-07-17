@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13"]
 
     steps:
       - name: Check out repository
@@ -54,9 +54,42 @@ jobs:
         working-directory: .
         run: uv run poe hooks-run
 
+  # Verifies the declared lower bounds actually work: re-resolves direct
+  # dependencies to the lowest versions the pyproject constraints allow
+  # (transitive deps stay current) and runs the suite across the Python matrix.
+  test-lowest:
+    name: Test (lowest-direct)
+    runs-on: ubuntu-latest
+    env:
+      UV_RESOLUTION: lowest-direct
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+      - name: Set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.0.0
+        with:
+          version: "latest"
+      - name: Install project at lowest-direct versions
+        run: |
+          uv sync --all-extras
+          uv run poe configure
+      - name: Run tests
+        run: uv run poe test
+
+  # Auto-merge Dependabot's github-actions bumps once CI is green.
   dependabot:
     name: "Dependabot"
-    needs: [test]
+    needs: [test, test-lowest]
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'}}
     permissions:
