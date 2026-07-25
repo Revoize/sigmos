@@ -1015,6 +1015,21 @@ wheels = [
 ]
 
 [[package]]
+name = "rumdl"
+version = "0.2.42"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b8/e1/599cd2588ed080b03c0699220d0a3c63007dc81cc09db249ed07da5fca08/rumdl-0.2.42.tar.gz", hash = "sha256:3b0af51a2c7b6755569627069b3077ba2ac00c1bae1624d2cfa95abb7734f48e", size = 2947487, upload-time = "2026-07-24T10:50:58.466Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/13/f1f8dde3e41fc078d37e333629372dcdb7f14d655a0db5bc522810ebc2fb/rumdl-0.2.42-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:21727a37e53642eee9f399a152536c1ae2387961ae70ed98ce274f8788b76b1a", size = 6081033, upload-time = "2026-07-24T10:50:51.307Z" },
+    { url = "https://files.pythonhosted.org/packages/62/74/bfe76802d554665206d64379a720a1e2fbbdac54b16cd9e8bb54ac442ff2/rumdl-0.2.42-py3-none-macosx_11_0_arm64.whl", hash = "sha256:5e420afa2ec844d598a152706549f57deb77596e8cc892fb473c319a8f8ceaa7", size = 5747401, upload-time = "2026-07-24T10:50:45.517Z" },
+    { url = "https://files.pythonhosted.org/packages/22/a7/abc8e40cfda1bbcc490517ddc9c09eb604c12457d06f83b1ae404894b5a2/rumdl-0.2.42-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:ee0db635388c941be23e551c2e91764885f5bddb3aaff6de5bdcb07106413ad4", size = 5876324, upload-time = "2026-07-24T10:50:47.706Z" },
+    { url = "https://files.pythonhosted.org/packages/06/dc/03c3a0769b75ced3bd2b00f279137e0d2b3d8666ae649597bdb8826f5abc/rumdl-0.2.42-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:9cfbe2295f99dee15d6d80ef80a2c2fb96eecb977701cf0b905f81a47463696e", size = 6246071, upload-time = "2026-07-24T10:50:54.703Z" },
+    { url = "https://files.pythonhosted.org/packages/63/a7/958540afe5e02a8f8b8e8491c2926a21d56ef6fe126dc880d6bc9a5e8c2f/rumdl-0.2.42-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:a5969d2b4b81e5eb4afa6149131d76d10c4c6c2b0d631e23c7a6f73a76dba452", size = 5866770, upload-time = "2026-07-24T10:50:49.471Z" },
+    { url = "https://files.pythonhosted.org/packages/60/28/42cf406f9a34552586adedb3a80dea2ab1b426cfb47214667f52c6df00ff/rumdl-0.2.42-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:e018356e3c77cfbef463f9496176852a9ccf640e27eea1e4c8e1c9e64e7a78f8", size = 6229999, upload-time = "2026-07-24T10:50:56.817Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/e3/625a6ad6d55ac1418d2b1eff6728c8783b47fda1acc3c34172317a5b8fed/rumdl-0.2.42-py3-none-win_amd64.whl", hash = "sha256:4a131cc4c621286b4dd2b5e2dc3f1974d6a29a0a9b1618148820db7fc9492450", size = 6225615, upload-time = "2026-07-24T10:50:52.949Z" },
+]
+
+[[package]]
 name = "scikit-learn"
 version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1220,6 +1235,7 @@ dev = [
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "ruff" },
+    { name = "rumdl" },
 ]
 
 [package.metadata]
@@ -1240,6 +1256,7 @@ dev = [
     { name = "pre-commit", specifier = ">=4.6.0,<5.0.0" },
     { name = "pytest", specifier = ">=9.0.2,<10.0.0" },
     { name = "ruff", specifier = ">=0.15.13,<0.16.0" },
+    { name = "rumdl", specifier = "==0.2.42" },
 ]
 
 [[package]]
