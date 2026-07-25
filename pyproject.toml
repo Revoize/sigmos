@@ -44,7 +44,7 @@ add-bounds = "lower"
 # value — lives in the dev harness repo's root pyproject.toml. Diff against that
 # before changing anything here, and propagate rather than diverge.
 [tool.rumdl]
-disable = ["MD025", "MD033", "MD036", "MD041"]
+disable = ["MD036"]
 unfixable = ["MD040"]
 
 [tool.rumdl.MD013]
