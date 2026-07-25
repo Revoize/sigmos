@@ -2,9 +2,13 @@
 
 Python package for speech signal quality evaluation using the SIGMOS metric.
 
-SIGMOS is a metric that estimates speech quality dimensions defined in the ITU-T P.804 standard. It is trained on subjectively annotated data collected according to the P.804 methodology to mimic human perception of speech quality.
+SIGMOS is a metric that estimates speech quality dimensions defined in the ITU-T P.804 standard. It
+is trained on subjectively annotated data collected according to the P.804 methodology to mimic
+human perception of speech quality.
 
-This package is based on the [Microsoft SIG-Challenge repository](https://github.com/microsoft/SIG-Challenge) and includes the original SIGMOS implementation and ONNX model.
+This package is based on the
+[Microsoft SIG-Challenge repository](https://github.com/microsoft/SIG-Challenge) and includes the
+original SIGMOS implementation and ONNX model.
 
 ## Installation
 
@@ -90,7 +94,8 @@ def calculate_sigmos(
 **Parameters:**
 
 - `audio`: Audio signal as 1D numpy array
-- `sample_rate`: Sample rate in Hz (defaults to 48000). Audio will be resampled to 48kHz if different.
+- `sample_rate`: Sample rate in Hz (defaults to 48000). Audio will be resampled to 48kHz if
+  different.
 
 **Returns:**
 Dictionary with SIGMOS scores:
@@ -120,7 +125,7 @@ The CLI supports all audio formats supported by `soundfile`, including:
 
 If you encounter an error like
 
-```
+```text
 Error: Failed to calculate SIGMOS scores: [ONNXRuntimeError] : 7 : INVALID_PROTOBUF : Load model from .../sigmos/models/model-sigmos_1697718653_41d092e8-epo-200.onnx failed: Protobuf parsing failed.
 ```
 
@@ -134,7 +139,8 @@ to fix.
 
 ### Reinstalling the package
 
-If you installed the package without the `--editable` flag and you want to update it, you need to run
+If you installed the package without the `--editable` flag and you want to update it, you need to
+run
 
 ```sh
 uv tool install --editable --reinstall .
@@ -142,13 +148,15 @@ uv tool install --editable --reinstall .
 
 (also works without the `--editable` flag).
 
-uv is particularly sticky when it comes to local tool installs. Just running `uv tool install .` or `uv tool install --force .` will likely result in reusing the wheel that was built in the past, i.e. not actually updating the package. Using `--reinstall` will rebuild the wheel.
+uv is particularly sticky when it comes to local tool installs. Just running `uv tool install .` or
+`uv tool install --force .` will likely result in reusing the wheel that was built in the past, i.e.
+not actually updating the package. Using `--reinstall` will rebuild the wheel.
 
 ## Attribution
 
 This implementation is based on code from Microsoft's SIG-Challenge repository:
 
-- **Repository**: https://github.com/microsoft/SIG-Challenge
+- **Repository**: <https://github.com/microsoft/SIG-Challenge>
 - **License**: MIT
 - **Original Work**: Microsoft Corporation
 - **Challenge**: ICASSP 2024 Speech Signal Improvement Challenge

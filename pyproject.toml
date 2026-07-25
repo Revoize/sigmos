@@ -24,6 +24,7 @@ dev = [
     "pre-commit>=4.6.0,<5.0.0",
     "pytest>=9.0.2,<10.0.0",
     "ruff>=0.15.13,<0.16.0",
+    "rumdl==0.2.42",
 ]
 [project.scripts]
 sigmos = "sigmos.cli:app"
@@ -37,6 +38,27 @@ build-backend = "hatchling.build"
 
 [tool.uv]
 add-bounds = "lower"
+
+# Fleet-standard markdown config. These blocks are kept identical across every
+# Revoize repo; the reference copy — and the per-rule rationale behind each
+# value — lives in the dev harness repo's root pyproject.toml. Diff against that
+# before changing anything here, and propagate rather than diverge.
+[tool.rumdl]
+disable = ["MD025", "MD033", "MD036", "MD041"]
+unfixable = ["MD040"]
+
+[tool.rumdl.MD013]
+line-length = 100
+reflow = true
+tables = true
+code-blocks = false
+
+[tool.rumdl.MD024]
+siblings-only = true
+
+[tool.rumdl.MD060]
+enabled = true
+style = "aligned"
 
 [tool.ruff]
 line-length = 88
@@ -87,11 +109,25 @@ envfile = ".env"
 [tool.poe.tasks]
 configure = "./scripts/configure.sh"
 update = "./scripts/update.sh"
-lint = "ruff check ."
 lint-fix = "ruff check --fix ."
-format = "ruff format ."
 format-check = "ruff format --check ."
+lint-md = "rumdl check ."
+format-md = "rumdl fmt ."
 test = 'coverage run -m pytest --showlocals'
 coverage = "coverage report"
 hooks-run = "pre-commit run --all-files"
 hooks-update = "pre-commit autoupdate"
+
+[tool.poe.tasks.lint]
+help = "Lint Python with ruff and markdown with rumdl (the CI gate)"
+sequence = [
+    { cmd = "ruff check ." },
+    { cmd = "rumdl check ." },
+]
+
+[tool.poe.tasks.format]
+help = "Auto-fix Python with ruff and markdown with rumdl"
+sequence = [
+    { cmd = "ruff format ." },
+    { cmd = "rumdl fmt ." },
+]
