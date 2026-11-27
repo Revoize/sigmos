@@ -11,9 +11,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      # Overrides .python-version, which uv otherwise prefers to the matrix.
+      UV_PYTHON: ${{ matrix.python-version }}
+      # Fail instead of testing on a uv-downloaded interpreter.
+      UV_PYTHON_DOWNLOADS: never
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
       - name: Check out repository
@@ -22,19 +27,19 @@ jobs:
           lfs: true
       - name: Set up python
         id: setup-python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install uv
-        uses: astral-sh/setup-uv@v10.3.3
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
         with:
-          version: "latest"
+          version: "0.13.10"
       - name: Load cached venv
         id: cached-uv-dependencies
         uses: actions/cache@v6
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('./uv.lock') }}
+          key: venv-v2-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('./uv.lock') }}
       - name: Install dependencies
         working-directory: .
         if: steps.cached-uv-dependencies.outputs.cache-hit != 'true'
@@ -62,9 +67,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       UV_RESOLUTION: lowest-direct
+      UV_PYTHON: ${{ matrix.python-version }}
+      UV_PYTHON_DOWNLOADS: never
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
       - name: Check out repository
@@ -72,13 +79,13 @@ jobs:
         with:
           lfs: true
       - name: Set up python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install uv
-        uses: astral-sh/setup-uv@v10.3.3
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
         with:
-          version: "latest"
+          version: "0.13.10"
       - name: Install project at lowest-direct versions
         run: |
           uv sync --all-extras
