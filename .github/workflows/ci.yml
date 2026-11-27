@@ -11,9 +11,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      # Overrides .python-version, which uv otherwise prefers to the matrix.
+      UV_PYTHON: ${{ matrix.python-version }}
+      # Fail instead of testing on a uv-downloaded interpreter.
+      UV_PYTHON_DOWNLOADS: never
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
       - name: Check out repository
@@ -34,7 +39,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('./uv.lock') }}
+          key: venv-v2-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('./uv.lock') }}
       - name: Install dependencies
         working-directory: .
         if: steps.cached-uv-dependencies.outputs.cache-hit != 'true'
@@ -62,9 +67,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       UV_RESOLUTION: lowest-direct
+      UV_PYTHON: ${{ matrix.python-version }}
+      UV_PYTHON_DOWNLOADS: never
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
       - name: Check out repository
